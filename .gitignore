@@ -1,0 +1,7 @@
+docker/.env
+task-2/vendor
+task-2/composer.lock
+task-2/tools/php-cs-fixer/vendor
+.idea
+/task-2/.php-cs-fixer.cache
+/task-2/.phpunit.result.cache

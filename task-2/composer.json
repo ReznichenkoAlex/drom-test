@@ -1,0 +1,40 @@
+{
+    "name": "drom/http-comments-client",
+    "description": "http client for fictional service of comments",
+    "type": "library",
+    "authors": [
+        {
+            "name": "reznichenko"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "psr/http-client": "^1.0",
+        "ext-mbstring": "*",
+        "symfony/options-resolver": "^7.0",
+        "guzzlehttp/guzzle": "^7.8",
+        "guzzlehttp/psr7": "^2.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5",
+        "friendsofphp/php-cs-fixer": "^3.49",
+        "vimeo/psalm": "^5.21",
+        "psalm/plugin-phpunit": "^0.18.4",
+        "psalm/plugin-mockery": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Drom\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Drom\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "php-cs-fix": "vendor/bin/php-cs-fixer fix",
+        "test": "vendor/bin/phpunit -c phpunit.xml",
+        "psalm": "vendor/bin/psalm"
+    }
+}
