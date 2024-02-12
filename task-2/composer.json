@@ -33,8 +33,10 @@
         }
     },
     "scripts": {
-        "php-cs-fix": "vendor/bin/php-cs-fixer fix",
-        "test": "vendor/bin/phpunit -c phpunit.xml",
-        "psalm": "vendor/bin/psalm"
+        "post-update-cmd": [
+            "vendor/bin/php-cs-fixer fix",
+            "vendor/bin/phpunit -c phpunit.xml",
+            "vendor/bin/psalm"
+        ]
     }
 }

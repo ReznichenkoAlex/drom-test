@@ -13,6 +13,6 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - 8080:8080
+      - "8080:8080"
     tty: true
     container_name: drom-php
