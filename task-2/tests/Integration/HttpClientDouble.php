@@ -21,7 +21,11 @@ class HttpClientDouble implements ClientInterface
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
         if ('GET' === $request->getMethod()) {
-            return new Response(200, [], json_encode($this->getComments(), JSON_THROW_ON_ERROR));
+            return new Response(
+                200,
+                [],
+                json_encode($this->getCommentItems(), JSON_THROW_ON_ERROR)
+            );
         }
 
         if ('POST' === $request->getMethod()) {
@@ -32,30 +36,42 @@ class HttpClientDouble implements ClientInterface
         }
 
         if ('PUT' === $request->getMethod()) {
-            $data = json_decode($request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
-            $comment = $this->storage[$data['id']] ?? null;
+            $data = json_decode(
+                $request->getBody()->getContents(),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+
+            $id = $this->getIdFrom($request);
+            $comment = $this->storage[$id] ?? null;
 
             if ( ! $comment) {
                 return new Response(404);
             }
 
             $comment = $this->updateComment($comment, $data);
-            return new Response(200, [], json_encode($comment, JSON_THROW_ON_ERROR));
+            return new Response(
+                200,
+                [],
+                json_encode(
+                    ['id' => $comment->getId(), 'name' => $comment->getName(), 'text' => $comment->getText()],
+                    JSON_THROW_ON_ERROR,
+                )
+            );
         }
 
         return new Response(405);
     }
 
-    /**
-     * @psalm-suppress RedundantFunctionCall
-     *
-     * @return Comment[]
-     *
-     * @psalm-return list<Comment>
-     */
-    private function getComments(): array
+    private function getCommentItems(): array
     {
-        return array_values($this->storage);
+        $result = [];
+        foreach ($this->storage as $comment) {
+            $result[] = ['id' => $comment->getId(), 'name' => $comment->getName(), 'text' => $comment->getText()];
+        }
+
+        return $result;
     }
 
 
@@ -78,5 +94,12 @@ class HttpClientDouble implements ClientInterface
         $this->storage[$comment->getId()] = $comment;
 
         return $comment;
+    }
+
+    private function getIdFrom(RequestInterface $request): int
+    {
+        $path = explode('/', $request->getUri()->getPath());
+
+        return (int) array_pop($path);
     }
 }

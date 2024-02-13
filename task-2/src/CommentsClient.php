@@ -56,8 +56,6 @@ final readonly class CommentsClient
      */
     public function post(Comment $comment): Comment
     {
-        $this->assertCommentIsValid($comment);
-
         $request = $this->createRequest('post_comment', $comment);
         $response = $this->client->sendRequest($request);
 
@@ -77,7 +75,6 @@ final readonly class CommentsClient
     public function put(Comment $comment): Comment
     {
         $this->assertCommentIsExist($comment);
-        $this->assertCommentIsValid($comment);
 
         $request = $this->createRequest('put_comment', $comment);
         $response = $this->client->sendRequest($request);
@@ -162,13 +159,6 @@ final readonly class CommentsClient
     {
         if (null === $comment->getId()) {
             throw new CommentClientException('can\'t update non-existent comment');
-        }
-    }
-
-    private function assertCommentIsValid(Comment $comment): void
-    {
-        if (null === $comment->getName() || null === $comment->getText()) {
-            throw new CommentClientException('can\'t create or update incomplete comment object');
         }
     }
 }

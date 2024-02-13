@@ -120,24 +120,11 @@ class CommentsClientTest extends TestCase
         $this->commentsClient->put($updatingComment);
     }
 
-    /**
-     * @dataProvider getUncorrectedComments
-     */
-    public function testPutMethodFailedBreakPreCondition(Comment $updatingComment): void
+    public function testPutMethodFailedBreakPreCondition(): void
     {
+        $updatingComment = new Comment(null, 'foo', 'bar');
+
         $this->expectException(CommentClientException::class);
         $this->commentsClient->put($updatingComment);
-    }
-
-    /**
-     * @return Comment[][]
-     */
-    public static function getUncorrectedComments(): array
-    {
-        return [
-            'Комментарий без поля id' => [new Comment(null, 'foo', 'bar')],
-            'Комментарий без поля name' => [new Comment(4, '', 'bar')],
-            'Комментарий без поля text' => [new Comment(4, 'foo', '')],
-        ];
     }
 }

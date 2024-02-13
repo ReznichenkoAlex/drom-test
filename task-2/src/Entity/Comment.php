@@ -2,13 +2,12 @@
 
 namespace Drom\Entity;
 
+/**
+ * @psalm-immutable
+ */
 final readonly class Comment implements \JsonSerializable
 {
-    public function __construct(
-        private ?int $id = null,
-        private ?string $name = null,
-        private ?string $text = null
-    ) {}
+    public function __construct(private ?int $id, private string $name, private string $text) {}
 
     public function getId(): ?int
     {
@@ -43,14 +42,11 @@ final readonly class Comment implements \JsonSerializable
     /**
      * @psalm-api
      *
-     * @return (int|null|string)[]
-     *
-     * @psalm-return array{id: int|null, name: null|string, text: null|string}
+     * @psalm-return array{name: null|string, text: null|string}
      */
     public function jsonSerialize(): array
     {
         return [
-            'id' => $this->id,
             'name' => $this->name,
             'text' => $this->text,
         ];
