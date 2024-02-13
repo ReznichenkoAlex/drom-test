@@ -45,7 +45,7 @@ class PostCommentTest extends TestCase
         self::assertNotEmpty($comments);
         self::assertEquals(1, $comments[0]->getId());
 
-        $comment->withName('Baz')->withId(4);
+        $comment = $comment->withName('Baz')->withId(4);
         try {
             $this->commentsClient->put($comment);
         } catch (CommentClientException $exception) {

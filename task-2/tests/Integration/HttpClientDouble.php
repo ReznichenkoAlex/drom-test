@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class HttpClientDouble implements ClientInterface
 {
-    /** @var list<Comment> */
+    /** @psalm-var list<Comment> */
     private array $storage = [];
 
     /**
@@ -29,10 +29,19 @@ class HttpClientDouble implements ClientInterface
         }
 
         if ('POST' === $request->getMethod()) {
-            $data = json_decode($request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
-            $id = $this->createNewComment($data);
+            $data = json_decode(
+                $request->getBody()->getContents(),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
 
-            return new Response(200, [], json_encode(['id' => $id], JSON_THROW_ON_ERROR));
+            $id = $this->createNewComment($data);
+            return new Response(
+                200,
+                [],
+                json_encode(['id' => $id], JSON_THROW_ON_ERROR)
+            );
         }
 
         if ('PUT' === $request->getMethod()) {
@@ -82,6 +91,7 @@ class HttpClientDouble implements ClientInterface
     {
         $lastInsertedKey = array_key_last($this->storage);
         $lastInsertedKey = $lastInsertedKey ? $lastInsertedKey + 1 : 1;
+
         $comment = new Comment($lastInsertedKey, $data['name'], $data['text']);
         $this->storage[$lastInsertedKey] = $comment;
 
