@@ -99,12 +99,12 @@ final readonly class CommentsClient
             'post_comment' => [
                 'method' => 'POST',
                 'uri' => '/comment',
-                'headers' => $generalHeaders + ['Content-type' => 'application/json; charset=utf-8'],
+                'headers' => $generalHeaders,
             ],
             'put_comment' => [
                 'method' => 'PUT',
                 'uri' => '/comment/%s',
-                'headers' => $generalHeaders + ['Content-type' => 'application/json; charset=utf-8'],
+                'headers' => $generalHeaders,
             ],
         ]);
     }
@@ -116,7 +116,7 @@ final readonly class CommentsClient
         $content = '';
         if ($comment) {
             $content = $this->encodeRequestBody($comment);
-            $headers += ['Content-Length' => mb_strlen($content)];
+            $headers += ['Content-type' => 'application/json; charset=utf-8', 'Content-Length' => mb_strlen($content)];
         }
 
         if ('PUT' === $method) {
