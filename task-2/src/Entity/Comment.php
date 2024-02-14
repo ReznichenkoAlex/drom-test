@@ -47,8 +47,8 @@ final readonly class Comment implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'name' => $this->name,
-            'text' => $this->text,
+            'name' => htmlentities($this->name),
+            'text' => htmlentities($this->text),
         ];
     }
 }
